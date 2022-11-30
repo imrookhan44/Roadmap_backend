@@ -16,6 +16,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
   console.log('Database connected')
 });
-app.listen(9000, () => {
-  console.log('Server listening on port 9000!');
+app.listen(process.env.PORT || 6000, () => {
+  console.log('Server listening on port 9000');
 });
