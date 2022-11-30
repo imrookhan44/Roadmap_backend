@@ -9,11 +9,16 @@ const BoardController = {
       type,
       Boards,
     });
-    const savedBoard = await board.save();
-    res.status(201).json({
-      message: "created successfully",
-      data: savedBoard,
-    });
+    await board.save().then(result => {
+      res.status(201).json({
+        userId: result.userId,
+        title: result.title,
+        description: result.description,
+        Boards: result.Boards,
+        id: result._id
+      });
+
+    })
   },
   getBoards: (req, res) => {
     Board.find({}, (err, boards) => {
