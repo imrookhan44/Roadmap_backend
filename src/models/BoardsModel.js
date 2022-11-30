@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const BoardSchema = new mongoose.Schema(
   {
-    userId: { type: Number },
+    userId: { type: String },
     title: { type: String },
     description: { type: String },
     type: {
