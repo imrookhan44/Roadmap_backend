@@ -1,6 +1,25 @@
 const User = require('../models/AuthModel')
+const UserVerification= require('../models/UserVerification')
+const nodemailer = require ('nodemailer')
+const {v4: uuidv4} = require('uuid')
+require  ('dotenv').config();
 const jwt = require ('jsonwebtoken')
 const SECRET_KEY = "jwt"
+// let transporter = nodemailer.createTransport({
+//   service:"gmail",
+//   auth:{
+//       user: process.env.AUTH_EMAIL,
+//       pass: process.env.AUTH_PASSWORD,
+//   }
+// })
+// transporter.verify((error,success)=>{
+//   if(error) {
+//     console.log(error);
+//   }else{
+//     console.log(success);
+//   }
+// })
+
 const AuthControllers ={
     async signupUser(req,res){
             
@@ -23,7 +42,7 @@ const AuthControllers ={
             confirmPassword
           });
           await newUser.save().then((result)=>{
-            const token = jwt.sign({email:result.email},SECRET_KEY)
+            const token = jwt.sign({email:newUser.email, id:newUser._id},SECRET_KEY)
             return res.status(201).json({
               newUser,
               token ,
@@ -48,13 +67,18 @@ const AuthControllers ={
     console.log("new user",res)
   },
   async loginUser(req,res){
-    if (req.body.password && req.body.email){
-      let user = await User.findOne(req.body).select("-password");
-      const token = jwt.sign({email:user.email},SECRET_KEY);
+    const {email,password,id} = req.body;
+    if (password && email){
+      let user = await User.findOne({email:email,password:password}).select("-password");
+      if (!user){
+      return  res.status(400).json({message:'User Not Found'});
+      }
+      const token = jwt.sign({email:email ,id : id},SECRET_KEY);
       return res.status(201).json({
         user,
         token,
         msg: 'User Login Successfully'
+        
       });
     }
 else {
