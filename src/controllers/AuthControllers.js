@@ -1,24 +1,43 @@
 const User = require('../models/AuthModel')
-const UserVerification= require('../models/UserVerification')
 const nodemailer = require ('nodemailer')
-const {v4: uuidv4} = require('uuid')
-require  ('dotenv').config();
+
 const jwt = require ('jsonwebtoken')
 const SECRET_KEY = "jwt"
-// let transporter = nodemailer.createTransport({
-//   service:"gmail",
-//   auth:{
-//       user: process.env.AUTH_EMAIL,
-//       pass: process.env.AUTH_PASSWORD,
-//   }
-// })
-// transporter.verify((error,success)=>{
-//   if(error) {
-//     console.log(error);
-//   }else{
-//     console.log(success);
-//   }
-// })
+const sendVerifyMail= async (name,email,user_id)=>{
+let transporter = nodemailer.createTransport({
+  service:"gmail",
+  auth:{
+      user: process.env.AUTH_EMAIL,
+      pass: process.env.AUTH_PASSWORD,
+  }
+});
+const mailOptions={
+  from:process.env.AUTH_EMAIL,
+  to:email,
+  subject:"Email verification",
+  html:'<p><h2> '+email+' Thanks For Registering On Our Site</h2> <h4>Please Verify Your Email To Continue....</h4> Click here to <a href="https://roadmap-backend.herokuapp.com/api/verify?id='+user_id+'"> Verify </a> your mail.</p>'
+ 
+} 
+transporter.sendMail(mailOptions,function(error,res){
+  if (error){
+ return console.log(error);
+  }
+  else{
+      // console.log("Email has been sent",res);
+    }
+   
+})
+
+transporter.verify((error,success)=>{
+  if(error) {
+   return console.log(error);
+  }else{
+    // console.log("welcome ",success);
+    
+  }
+})
+}
+
 
 const AuthControllers ={
     async signupUser(req,res){
@@ -39,7 +58,8 @@ const AuthControllers ={
             email,
             phoneNumber,
             password,
-            confirmPassword
+            confirmPassword,
+            verified:false,
           });
           await newUser.save().then((result)=>{
             const token = jwt.sign({email:newUser.email, id:newUser._id},SECRET_KEY)
@@ -48,7 +68,10 @@ const AuthControllers ={
               token ,
               msg: 'User Created Successfully' });
           });
-
+if(newUser){
+  sendVerifyMail(name,email,newUser._id);
+ return res.render('registration',{message:'your registration has been successfully, please verify your email'})
+}
          
             
 
@@ -62,7 +85,7 @@ const AuthControllers ={
           return res.status(201).json({ msg: 'User Already Exist' });
       }
     } catch (e) {
-      res.status(400).json({ Error: true, msg: e.message });
+    return  res.status(400).json({ Error: true, msg: e.message });
     }
     console.log("new user",res)
   },
@@ -84,6 +107,17 @@ const AuthControllers ={
 else {
   res.send({result:"Invalid Credentials"});
 }
+    },
+    async verifyMail (req,res){
+      try{
+      const updateInfo =await  User.updateOne({_id:req.query.id},{$set:{verified:true}});
+    console.log(updateInfo);
+    res.send(`<h1 style="text-align: center; margin-top: 100px;">Email Verified</h1>
+    <p style="text-align: center; margin-top: 100px;">You can close this window now</p>
+`,)
+      } catch(error){
+       return console.log(error);
+      }
     }
   }
 
