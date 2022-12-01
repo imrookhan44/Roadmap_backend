@@ -1,6 +1,6 @@
 const User = require('../models/AuthModel')
 const nodemailer = require ('nodemailer')
-
+const bcrypt = require('bcrypt')
 const jwt = require ('jsonwebtoken')
 const SECRET_KEY = "jwt"
 const sendVerifyMail= async (name,email,user_id)=>{
@@ -42,23 +42,25 @@ transporter.verify((error,success)=>{
 const AuthControllers ={
     async signupUser(req,res){
             
-        const {name,email,phoneNumber,password,confirmPassword} = req.body;
+        const {name,email,phoneNumber,password,} = req.body;
         let check = await User.findOne({ phoneNumber});
+        if (!name || !email || !password || !phoneNumber) {
+          return res.status(201).json({ Error: true, msg: 'Please enter all fields' });
+        }
     if (check) {
       return res.status(201).json({ msg: 'Mobile Number Already Used', Error: true });
-    }
-    if (!name || !email || !password || !phoneNumber || !confirmPassword) {
-      return res.status(201).json({ Error: true, msg: 'Please enter all fields' });
     }
     try {
       const user = await User.findOne({ email });
       if (!user) {
+     let hashedpassword =await bcrypt.hash(password, 12)
+
+                
         const newUser = new User({
             name,
             email,
             phoneNumber,
-            password,
-            confirmPassword,
+            password:hashedpassword,
             verified:false,
           });
           await newUser.save().then((result)=>{
@@ -70,11 +72,11 @@ const AuthControllers ={
           });
 if(newUser){
   sendVerifyMail(name,email,newUser._id);
- return res.render('registration',{message:'your registration has been successfully, please verify your email'})
+ return res.status('registration',{message:'your registration has been successfully, please verify your email'})
 }
          
             
-
+    
       }
       else {
         res.status(201).json({
@@ -84,25 +86,28 @@ if(newUser){
           })
           return res.status(201).json({ msg: 'User Already Exist' });
       }
-    } catch (e) {
-    return  res.status(400).json({ Error: true, msg: e.message });
+    } catch (error) {
+      return console.log(error);
     }
-    console.log("new user",res)
+   
   },
   async loginUser(req,res){
     const {email,password,id} = req.body;
     if (password && email){
-      let user = await User.findOne({email:email,password:password}).select("-password");
+      let user = await User.findOne({email:email})
       if (!user){
       return  res.status(400).json({message:'User Not Found'});
       }
-      const token = jwt.sign({email:email ,id : id},SECRET_KEY);
+     let isMatch= await bcrypt.compare(password, user.password)
+      if(isMatch){
+        const token = jwt.sign({email:email ,id : id},SECRET_KEY);
       return res.status(201).json({
         user,
         token,
         msg: 'User Login Successfully'
         
-      });
+      })
+    }
     }
 else {
   res.send({result:"Invalid Credentials"});
