@@ -9,11 +9,16 @@ const BoardController = {
       type,
       Boards,
     });
-    const savedBoard = await board.save();
-    res.status(201).json({
-      message: "created successfully",
-      data: savedBoard,
-    });
+    await board.save().then(result => {
+      res.status(201).json({
+        userId: result.userId,
+        title: result.title,
+        description: result.description,
+        Boards: result.Boards,
+        id: result._id
+      });
+
+    })
   },
   getBoards: (req, res) => {
     Board.find({}, (err, boards) => {
@@ -57,5 +62,14 @@ const BoardController = {
       }
     });
   },
+  GetById: (req, res) => {
+    Board.findById({ _id: req.params._id }, (err, boards) => {
+      if (err) {
+        res.status(500).json({ message: "Error getting board" });
+      } else {
+        res.status(200).json({ message: "Board found successfully", boards });
+      }
+    });
+  }
 };
 module.exports = BoardController;
