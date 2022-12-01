@@ -15,7 +15,7 @@ const mailOptions={
   from:process.env.AUTH_EMAIL,
   to:email,
   subject:"Email verification",
-  html:'<p><h2> '+email+' Thanks For Registering On Our Site</h2> <h4>Please Verify Your Email To Continue....</h4> Click here to <a href="http://localhost:3000/api/verify?id='+user_id+'"> Verify </a> your mail.</p>'
+  html:'<p><h2> '+email+' Thanks For Registering On Our Site</h2> <h4>Please Verify Your Email To Continue....</h4> Click here to <a href="https://roadmap-backend.herokuapp.com/api/verify?id='+user_id+'"> Verify </a> your mail.</p>'
  
 } 
 transporter.sendMail(mailOptions,function(error,res){
