@@ -48,10 +48,10 @@ const BoardSchema = new mongoose.Schema(
                   {
                     email: { type: String },
                     name: { type: String },
-                    profile_pic: {
-                      type: String,
-                      default: "https://i.imgur.com/8Km9tLL.png",
-                    },
+                    // profile_pic: {
+                    //   type: String,
+                    //   default: "https://i.imgur.com/8Km9tLL.png",
+                    // },
                   },
                 ],
                 date: {

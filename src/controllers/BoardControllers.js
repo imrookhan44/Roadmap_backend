@@ -28,7 +28,7 @@ const BoardController = {
           data: boards,
         });
       } else {
-        res.status(404).json({
+        res.status(200).json({
           message: "no board found",
         });
       }
