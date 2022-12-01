@@ -18,10 +18,7 @@ var UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  confirmPassword: {
-    type: String,
-    required: true
-  },
+ 
 verified:{
     type: Boolean,
     default: false
