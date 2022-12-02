@@ -47,7 +47,7 @@ const BoardSchema = new mongoose.Schema(
                 members: [
                   {
                     email: { type: String },
-                    name: { type: String },
+                    // name: { type: String },
                     // profile_pic: {
                     //   type: String,
                     //   default: "https://i.imgur.com/8Km9tLL.png",

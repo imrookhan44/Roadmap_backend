@@ -1,4 +1,6 @@
 const Board = require("../models/BoardsModel");
+const User = require("../models/AuthModel");
+const sendEmail = require("../Utils/Email");
 const BoardController = {
   async createBoard(req, res) {
     const { userId, title, description, type, Boards } = req.body;
@@ -9,16 +11,15 @@ const BoardController = {
       type,
       Boards,
     });
-    await board.save().then(result => {
+    await board.save().then((result) => {
       res.status(201).json({
         userId: result.userId,
         title: result.title,
         description: result.description,
         Boards: result.Boards,
-        id: result._id
+        id: result._id,
       });
-
-    })
+    });
   },
   getBoards: (req, res) => {
     Board.find({}, (err, boards) => {
@@ -70,6 +71,25 @@ const BoardController = {
         res.status(200).json({ message: "Board found successfully", boards });
       }
     });
-  }
+  },
+  sendEmailAndSave: async (req, res) => {
+    const { email } = req.body;
+    Board.findByIdAndUpdate(
+      { _id: req.params._id },
+      { $push: { "Boards.0.cards.0.tasks.0.members": { email } } },
+      { new: true },
+      (err, updatedRoadmap) => {
+        if (err) {
+          res.status(500).json({ message: "Error updating Roadmap" });
+
+        } else {
+          res.status(200).json({
+            message: "Roadmap updated successfully",
+            updatedRoadmap,
+          });
+        }
+      }
+    );
+  },
 };
 module.exports = BoardController;
