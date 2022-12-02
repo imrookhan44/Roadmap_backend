@@ -8,7 +8,8 @@ router.get('/', ((req, res) => {
 
 router.post('/register', AuthControllers.signupUser);
 router.post('/login', AuthControllers.loginUser);
-router.get('/verify', AuthControllers.verifyMail)
+router.get('/verify', AuthControllers.verifyMail);
+router.put('/forgetPassword', AuthControllers.forgetPassword);
 router.post('/user/data', BoardController.createBoard);
 router.get('/user/alldata', BoardController.getBoards);
 router.put('/user/data/:_id', BoardController.updateRoadmap);
