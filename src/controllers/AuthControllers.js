@@ -123,9 +123,27 @@ else {
       } catch(error){
        return console.log(error);
       }
-    }
-  }
+    },
+    async forgetPassword(req,res){
+      const {email,password} = req.body;
+ let user = User.findOne({email})
+if(user){
+  let hashedpassword =await bcrypt.hash(password, 12)
 
+  const updateInfo =await  User.updateOne({email},
+    {$set:{password:hashedpassword}});
+  res.status(201).json({
+    msg: 'success',
+  })
+  
+}else{
+return  res.status(404).json({
+  message:'error'
+})
+}
+ },
+  }
+     
 
 
 module.exports = AuthControllers;
