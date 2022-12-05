@@ -73,9 +73,8 @@ const BoardController = {
     });
   },
   sendEmailAndSave: async (req, res) => {
-    const { email } = req.body;
-
-    sendEmail(email)
+    const { email, id } = req.body;
+    sendEmail(email, id);
     Board.findByIdAndUpdate(
       { _id: req.params._id },
       { $push: { "Boards.0.cards.0.tasks.0.members": { email } } },

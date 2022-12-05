@@ -96,23 +96,22 @@ const AuthControllers = {
     }
   },
   async loginUser(req, res) {
-    const { email, password, id } = req.body;
+    const { email, password } = req.body;
     if (password && email) {
-      let user = await User.findOne({ email: email });
+      let user = await User.findOne({ email: email })
       if (!user) {
-        return res.status(400).json({ message: "User Not Found" });
+        return res.status(400).json({ message: 'User Not Found' });
       }
-      let isMatch = await bcrypt.compare(password, user.password);
+      let isMatch = await bcrypt.compare(password, user.password)
       if (isMatch) {
-        const token = jwt.sign({ email: email, id: id }, SECRET_KEY);
+        const token = jwt.sign({ email: email }, SECRET_KEY);
         return res.status(201).json({
           user,
           token,
-          msg: "User Login Successfully",
-        });
+          msg: 'User Login Successfully'
+
+        })
       }
-    } else {
-      res.send({ result: "Invalid Credentials" });
     }
   },
   async verifyMail(req, res) {

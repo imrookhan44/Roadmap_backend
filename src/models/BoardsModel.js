@@ -16,7 +16,10 @@ const BoardSchema = new mongoose.Schema(
         cards: [
           {
             title: { type: String },
-            description: { type: String },
+            desc: { type: String },
+            date: {
+              type: String
+            },
             labels: [
               {
                 color: { type: String },

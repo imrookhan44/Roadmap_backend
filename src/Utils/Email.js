@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendMail = async (email) => {
+const sendMail = async (email, id) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -10,8 +10,9 @@ const sendMail = async (email) => {
   });
   const mailOptions = {
     to: email,
-    subject: "Invite Link",
-    html: `<p>Click on the Link: ${email} </p>`,
+    subject: "You have been invited to collaborate on a roadmap",
+    html: `<h1>Click on the link to join the board</h1>
+      <a href="https://roadmap2k22.netlify.app/#/roadmaps/${id}">Join Board</a>`
   };
   transporter.sendMail(mailOptions, function (error, res) {
     if (error) {
