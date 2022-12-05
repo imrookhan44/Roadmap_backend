@@ -92,7 +92,7 @@ if(newUser){
    
   },
   async loginUser(req,res){
-    const {email,password,id} = req.body;
+    const {email,password} = req.body;
     if (password && email){
       let user = await User.findOne({email:email})
       if (!user){
@@ -100,7 +100,7 @@ if(newUser){
       }
      let isMatch= await bcrypt.compare(password, user.password)
       if(isMatch){
-        const token = jwt.sign({email:email ,id : id},SECRET_KEY);
+        const token = jwt.sign({email:email},SECRET_KEY);
       return res.status(201).json({
         user,
         token,
