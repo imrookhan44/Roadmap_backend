@@ -74,6 +74,8 @@ const BoardController = {
   },
   sendEmailAndSave: async (req, res) => {
     const { email } = req.body;
+
+    sendEmail(email)
     Board.findByIdAndUpdate(
       { _id: req.params._id },
       { $push: { "Boards.0.cards.0.tasks.0.members": { email } } },
@@ -81,7 +83,6 @@ const BoardController = {
       (err, updatedRoadmap) => {
         if (err) {
           res.status(500).json({ message: "Error updating Roadmap" });
-
         } else {
           res.status(200).json({
             message: "Roadmap updated successfully",
