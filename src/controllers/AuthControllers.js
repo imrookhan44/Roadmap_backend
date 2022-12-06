@@ -126,13 +126,13 @@ else {
     },
     async forgetPassword(req,res){
       const {email,password} = req.body;
- let user = User.findOne({email})
+ let user = await User.findOne({email})
 if(user){
   let hashedpassword =await bcrypt.hash(password, 12)
 
   const updateInfo =await  User.updateOne({email},
     {$set:{password:hashedpassword}});
-  res.status(201).json({
+  return res.status(201).json({
     msg: 'success',
   })
   
