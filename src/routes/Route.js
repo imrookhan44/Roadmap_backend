@@ -1,4 +1,4 @@
-  const express = require('express')
+const express = require('express')
 const router = express.Router();
 const BoardController = require('../controllers/BoardControllers.js');
 const AuthControllers = require('../controllers/AuthControllers.js');
@@ -15,4 +15,5 @@ router.get('/user/alldata', BoardController.getBoards);
 router.put('/user/data/:_id', BoardController.updateRoadmap);
 router.delete('/user/data/:_id', BoardController.deleteRoadmap);
 router.get('/user/data/:_id', BoardController.GetById);
+router.post('/sendEmail/:_id', BoardController.sendEmailAndSave);
 module.exports = router;
