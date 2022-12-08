@@ -123,30 +123,30 @@ const AuthControllers = {
       console.log(updateInfo);
       res.send(`<h1 style="text-align: center; margin-top: 100px;">Email Verified</h1>
     <p style="text-align: center; margin-top: 100px;">You can close this window now</p>
-`);
-    } catch (error) {
-      return console.log(error);
-    }
-  },
-  async forgetPassword(req, res) {
-    const { email, password } = req.body;
-    let user = User.findOne({ email });
-    if (user) {
-      let hashedpassword = await bcrypt.hash(password, 12);
+`,)
+      } catch(error){
+       return console.log(error);
+      }
+    },
+    async forgetPassword(req,res){
+      const {email,password} = req.body;
+ let user = await User.findOne({email})
+if(user){
+  let hashedpassword =await bcrypt.hash(password, 12)
 
-      const updateInfo = await User.updateOne(
-        { email },
-        { $set: { password: hashedpassword } }
-      );
-      res.status(201).json({
-        msg: "success",
-      });
-    } else {
-      return res.status(404).json({
-        message: "error",
-      });
-    }
-  },
-};
+  const updateInfo =await  User.updateOne({email},
+    {$set:{password:hashedpassword}});
+  return res.status(201).json({
+    msg: 'success',
+  })
+  
+}else{
+return  res.status(404).json({
+  message:'error'
+})
+}
+ },
+  }
+     
 
 module.exports = AuthControllers;
