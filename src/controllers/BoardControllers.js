@@ -56,7 +56,7 @@ const BoardController = {
   // },
   getData: (req, res) => {
     Board.find({}, (err, boards) => {
-      console.log(boards);
+      // console.log(boards);
       if (!err && boards.length !== 0) {
         res.status(200).json({
           message: "success",
