@@ -1,7 +1,10 @@
-const User = require("../models/AuthModel");
-const nodemailer = require("nodemailer");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import  User from "../models/AuthModel.js";
+// const nodemailer = require("nodemailer");
+import nodemailer from 'nodemailer';
+// const bcrypt = require("bcrypt");
+import bcrypt from 'bcrypt';
+// const jwt = require("jsonwebtoken");
+import jwt from 'jsonwebtoken';
 const SECRET_KEY = "jwt";
 const sendVerifyMail = async (name, email, user_id) => {
   let transporter = nodemailer.createTransport({
@@ -149,4 +152,4 @@ return  res.status(404).json({
   }
      
 
-module.exports = AuthControllers;
+export default AuthControllers;
