@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import  mongoose from "mongoose";
 
 const BoardSchema = new mongoose.Schema(
   {
@@ -27,6 +27,9 @@ const BoardSchema = new mongoose.Schema(
                 text: { type: String },
               },
             ],
+            files:{
+              type: String
+            },
             tasks: [
               {
                 completed: {
@@ -81,4 +84,4 @@ const BoardSchema = new mongoose.Schema(
 );
 
 const Board = mongoose.model("Board", BoardSchema);
-module.exports = Board;
+export default Board;
