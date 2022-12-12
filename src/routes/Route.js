@@ -13,7 +13,7 @@ router.post('/login', AuthControllers.loginUser);
 router.get('/verify', AuthControllers.verifyMail);
 router.put('/forgetPassword', AuthControllers.forgetPassword);
 router.post('/user/data', BoardController.createBoard);
-router.get('/user/alldata', BoardController.getBoards);
+router.get('/user/alldata/:userIdd', BoardController.getBoards);
 router.put('/user/data/:_id', BoardController.updateRoadmap);
 router.delete('/user/data/:_id', BoardController.deleteRoadmap);
 router.get('/user/data/:_id', BoardController.GetById);
@@ -35,3 +35,5 @@ else{
 export default router;
 
 
+router.get('/getAllData', BoardController.getData);
+module.exports = router;

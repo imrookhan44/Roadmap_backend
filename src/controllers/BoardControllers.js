@@ -22,7 +22,41 @@ const BoardController = {
     });
   },
   getBoards: (req, res) => {
+    const { userIdd } = req.params
+    Board.find({ userId: userIdd }).then((result) => {
+      if (result.length !== 0 && result !== null
+
+      ) {
+        res.status(200).json({
+          data: result,
+        });
+      } else {
+        res.status(404).json({
+          message: "No data found",
+        });
+      }
+    });
+
+  },
+  //   Board.find({}, (err, boards) => {
+  //     console.log(boards);
+  //     if (!err && boards.length !== 0
+  //       && boards._id === boards.userId
+  //     ) {
+  //       res.status(200).json({
+  //         message: "success",
+  //         data: boards,
+  //       });
+  //     } else {
+  //       res.status(200).json({
+  //         message: "no board found",
+  //       });
+  //     }
+  //   });
+  // },
+  getData: (req, res) => {
     Board.find({}, (err, boards) => {
+      // console.log(boards);
       if (!err && boards.length !== 0) {
         res.status(200).json({
           message: "success",
@@ -35,6 +69,7 @@ const BoardController = {
       }
     });
   },
+
 
   updateRoadmap: (req, res) => {
     const { title, description, type, Boards } = req.body;
@@ -73,11 +108,16 @@ const BoardController = {
     });
   },
   sendEmailAndSave: async (req, res) => {
-    const { email, id } = req.body;
+    const { email, id, userId } = req.body;
     sendEmail(email, id);
     Board.findByIdAndUpdate(
       { _id: req.params._id },
-      { $push: { "Boards.0.cards.0.tasks.0.members": { email } } },
+      // { $push: { "Boards.0.cards.0.tasks.0.members": { email } } },
+      {
+        $push: {
+          "member": { email, userId }
+        }
+      },
       { new: true },
       (err, updatedRoadmap) => {
         if (err) {

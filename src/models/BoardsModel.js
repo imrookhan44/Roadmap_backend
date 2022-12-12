@@ -15,10 +15,11 @@ const BoardSchema = new mongoose.Schema(
         title: { type: String },
         cards: [
           {
+            assign: [{ email: { type: String } }],
             title: { type: String },
             desc: { type: String },
             date: {
-              type: String
+              type: String,
             },
             labels: [
               {
@@ -50,8 +51,7 @@ const BoardSchema = new mongoose.Schema(
                     date: { type: Date, default: Date.now },
                   },
                 ],
-          
-                members: [
+                assign: [
                   {
                     email: { type: String },
                     // name: { type: String },
@@ -69,6 +69,12 @@ const BoardSchema = new mongoose.Schema(
             ],
           },
         ],
+      },
+    ],
+    member: [
+      {
+        email: { type: String },
+        userId: { type: String }
       },
     ],
   },
