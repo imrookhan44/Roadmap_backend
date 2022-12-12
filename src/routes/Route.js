@@ -31,9 +31,8 @@ else{
 }
 })
 
+router.get('/getAllData', BoardController.getData);
 
 export default router;
 
 
-router.get('/getAllData', BoardController.getData);
-module.exports = router;
