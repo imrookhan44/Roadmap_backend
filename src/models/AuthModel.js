@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 var UserSchema = new mongoose.Schema({
   name: {
@@ -25,4 +25,4 @@ verified:{
 }
 },{timestamps:true})
 const User = mongoose.model('User', UserSchema);
-module.exports = User;
+export default User;

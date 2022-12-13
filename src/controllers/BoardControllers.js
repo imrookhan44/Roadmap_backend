@@ -1,6 +1,6 @@
-const Board = require("../models/BoardsModel");
-const User = require("../models/AuthModel");
-const sendEmail = require("../Utils/Email");
+import  Board from "../models/BoardsModel.js";
+import User from "../models/AuthModel.js";
+import sendEmail from "../Utils/Email.js";
 const BoardController = {
   async createBoard(req, res) {
     const { userId, title, description, type, Boards } = req.body;
@@ -134,4 +134,4 @@ const BoardController = {
     );
   },
 };
-module.exports = BoardController;
+export default BoardController;
