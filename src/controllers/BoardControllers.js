@@ -23,9 +23,11 @@ const BoardController = {
   },
   getBoards: (req, res) => {
     const { userIdd } = req.params
-    Board.find({ userId: userIdd }).then((result) => {
-      if (result.length !== 0 && result !== null
-
+    Board.find({
+      userId: userIdd
+    }).then((result) => {
+      if (
+        result.length !== 0 || result[0].member.includes(userIdd)
       ) {
         res.status(200).json({
           data: result,
