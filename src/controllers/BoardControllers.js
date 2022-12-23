@@ -1,4 +1,7 @@
-import  Board from "../models/BoardsModel.js";
+// const Board = require("../models/BoardsModel");
+// const User = require("../models/AuthModel");
+// const sendEmail = require("../Utils/Email");
+import Board from "../models/BoardsModel.js";
 import User from "../models/AuthModel.js";
 import sendEmail from "../Utils/Email.js";
 const BoardController = {
@@ -22,11 +25,11 @@ const BoardController = {
     });
   },
   getBoards: (req, res) => {
-    const { userIdd } = req.params
-    Board.find({ userId: userIdd }).then((result) => {
-      if (result.length !== 0 && result !== null
-
-      ) {
+    const { userIdd } = req.params;
+    Board.find({
+      $or: [{ userId: userIdd }, { "member.userId": userIdd }],
+    }).then((result) => {
+      if (result.length !== 0) {
         res.status(200).json({
           data: result,
         });
@@ -36,7 +39,6 @@ const BoardController = {
         });
       }
     });
-
   },
   //   Board.find({}, (err, boards) => {
   //     console.log(boards);
@@ -69,7 +71,6 @@ const BoardController = {
       }
     });
   },
-
 
   updateRoadmap: (req, res) => {
     const { title, description, type, Boards } = req.body;
@@ -115,8 +116,8 @@ const BoardController = {
       // { $push: { "Boards.0.cards.0.tasks.0.members": { email } } },
       {
         $push: {
-          "member": { email, userId }
-        }
+          member: { email, userId },
+        },
       },
       { new: true },
       (err, updatedRoadmap) => {
@@ -130,6 +131,14 @@ const BoardController = {
         }
       }
     );
+  },
+  getAllUsers: async (req, res) => {
+    const { email } = req.params;
+    let searchData = await User.find({ email: { $regex: email } });
+    res.status(200).json({
+      data: searchData,
+      message: "user Found Successfully"
+    });
   },
 };
 export default BoardController;

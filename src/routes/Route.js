@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 const router = express.Router();
 import  BoardController from '../controllers/BoardControllers.js';
 import AuthControllers from '../controllers/AuthControllers.js';
@@ -24,10 +24,9 @@ router.post('/upload', upload.single("myFile") ,function(req, res) {
 if (req.file){
     // console.log(req.file);
     return res.status(200).json({
-        message:'success'
-    })
-}
-else{
+      message: "success",
+    });
+  } else {
     return res.status(404).json({
         message:'error'
     })
@@ -39,6 +38,7 @@ router.post('/createTask', TodoController.createTask);
 router.put('/updateTask', TodoController.updateTask);
 router.post('/getTask',TodoController.getTask)
 router.post('/deleteTask',TodoController.deleteTask);
+router.get("/getAllUsers/:email", BoardController.getAllUsers)
 export default router;
 
 
