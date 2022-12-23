@@ -1,4 +1,4 @@
-import  User from "../models/AuthModel.js";
+import User from "../models/AuthModel.js";
 // const nodemailer = require("nodemailer");
 import nodemailer from 'nodemailer';
 // const bcrypt = require("bcrypt");
@@ -29,7 +29,6 @@ const sendVerifyMail = async (name, email, user_id) => {
     if (error) {
       return console.log(error);
     } else {
-      // console.log("Email has been sent",res);
     }
   });
 
@@ -37,7 +36,6 @@ const sendVerifyMail = async (name, email, user_id) => {
     if (error) {
       return console.log(error);
     } else {
-      // console.log("welcome ",success);
     }
   });
 };
@@ -127,29 +125,29 @@ const AuthControllers = {
       res.send(`<h1 style="text-align: center; margin-top: 100px;">Email Verified</h1>
     <p style="text-align: center; margin-top: 100px;">You can close this window now</p>
 `,)
-      } catch(error){
-       return console.log(error);
-      }
-    },
-    async forgetPassword(req,res){
-      const {email,password} = req.body;
- let user = await User.findOne({email})
-if(user){
-  let hashedpassword =await bcrypt.hash(password, 12)
+    } catch (error) {
+      return console.log(error);
+    }
+  },
+  async forgetPassword(req, res) {
+    const { email, password } = req.body;
+    let user = await User.findOne({ email })
+    if (user) {
+      let hashedpassword = await bcrypt.hash(password, 12)
 
-  const updateInfo =await  User.updateOne({email},
-    {$set:{password:hashedpassword}});
-  return res.status(201).json({
-    msg: 'success',
-  })
-  
-}else{
-return  res.status(404).json({
-  message:'error'
-})
+      const updateInfo = await User.updateOne({ email },
+        { $set: { password: hashedpassword } });
+      return res.status(201).json({
+        msg: 'success',
+      })
+
+    } else {
+      return res.status(404).json({
+        message: 'error'
+      })
+    }
+  },
 }
- },
-  }
-     
+
 
 export default AuthControllers;

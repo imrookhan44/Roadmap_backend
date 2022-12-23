@@ -29,5 +29,6 @@ router.post("/upload", upload.single("myFile"), function (req, res) {
 });
 
 router.get("/getAllData", BoardController.getData);
-router.get("/getAllUsers/:email", BoardController.getAllUsers)
+router.get("/getAllUsers/:email", BoardController.getAllUsers);
+router.get("/dashboard", BoardController.dashBoard);
 export default router;
