@@ -1,4 +1,4 @@
-import  mongoose from "mongoose";
+import mongoose from "mongoose";
 
 const BoardSchema = new mongoose.Schema(
   {
@@ -27,7 +27,10 @@ const BoardSchema = new mongoose.Schema(
                 text: { type: String },
               },
             ],
-            files:{
+            points: {
+              type: Number,
+            },
+            files: {
               type: String
             },
             tasks: [
@@ -74,7 +77,8 @@ const BoardSchema = new mongoose.Schema(
     member: [
       {
         email: { type: String },
-        userId: { type: String }
+        userId: { type: String },
+        date: { type: Date, default: Date.now },
       },
     ],
   },

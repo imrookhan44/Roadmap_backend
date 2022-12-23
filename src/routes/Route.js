@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import  BoardController from '../controllers/BoardControllers.js';
+import BoardController from '../controllers/BoardControllers.js';
 import AuthControllers from '../controllers/AuthControllers.js';
 import TodoController from '../controllers/TodoController.js';
 import { upload } from '../../helpers/upload.js';
@@ -19,26 +19,28 @@ router.put('/user/data/:_id', BoardController.updateRoadmap);
 router.delete('/user/data/:_id', BoardController.deleteRoadmap);
 router.get('/user/data/:_id', BoardController.GetById);
 router.post('/sendEmail/:_id', BoardController.sendEmailAndSave);
-router.post('/upload', upload.single("myFile") ,function(req, res) {
-    // console.log('req',req.body);
-if (req.file){
+router.post('/upload', upload.single("myFile"), function (req, res) {
+  // console.log('req',req.body);
+  if (req.file) {
     // console.log(req.file);
     return res.status(200).json({
       message: "success",
     });
   } else {
     return res.status(404).json({
-        message:'error'
+      message: 'error'
     })
-}
+  }
 })
 
 router.get('/getAllData', BoardController.getData);
 router.post('/createTask', TodoController.createTask);
 router.put('/updateTask', TodoController.updateTask);
-router.post('/getTask',TodoController.getTask)
-router.post('/deleteTask',TodoController.deleteTask);
+router.post('/getTask', TodoController.getTask)
+router.post('/deleteTask', TodoController.deleteTask);
 router.get("/getAllUsers/:email", BoardController.getAllUsers)
+router.get("/dashboard", BoardController.dashBoard);
+
 export default router;
 
 
