@@ -1,6 +1,3 @@
-// const Board = require("../models/BoardsModel");
-// const User = require("../models/AuthModel");
-// const sendEmail = require("../Utils/Email");
 import Board from "../models/BoardsModel.js";
 import User from "../models/AuthModel.js";
 import sendEmail from "../Utils/Email.js";
@@ -40,25 +37,9 @@ const BoardController = {
       }
     });
   },
-  //   Board.find({}, (err, boards) => {
-  //     console.log(boards);
-  //     if (!err && boards.length !== 0
-  //       && boards._id === boards.userId
-  //     ) {
-  //       res.status(200).json({
-  //         message: "success",
-  //         data: boards,
-  //       });
-  //     } else {
-  //       res.status(200).json({
-  //         message: "no board found",
-  //       });
-  //     }
-  //   });
-  // },
+
   getData: (req, res) => {
     Board.find({}, (err, boards) => {
-      // console.log(boards);
       if (!err && boards.length !== 0) {
         res.status(200).json({
           message: "success",
@@ -138,6 +119,14 @@ const BoardController = {
     res.status(200).json({
       data: searchData,
       message: "user Found Successfully"
+    });
+  },
+  dashBoard: async (req, res) => {
+    let newClients = await User.find({
+      createdAt: { $gte: new Date(new Date().setDate(new Date().getDate() - 7)), },
+    }).count().exec();
+    res.status(200).json({
+      newClients,
     });
   },
 };
