@@ -22,12 +22,12 @@ const TodoController ={
               }
         },
 async updateTask(req, res){
-    const {userId,task}=req.body;
+    const {_id,task}=req.body;
     
-    console.log('jdj' ,req.body)
+    // console.log('jdj' ,req.body)
     // let tasks = Todo.findById({_id});
-if(task){
-const update =await Todo.findOneAndUpdate({userId},
+if(_id){
+const update =await Todo.findOneAndUpdate({_id},
 {$set:{task}})
 return res.status(200).json({msg:'updated successfully'})
 }
