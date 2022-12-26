@@ -1,4 +1,4 @@
-import Todo from "../models/todoModel.js";
+import Todo from './../models/TodoModel.js';
 
 const TodoController = {
     async createTask(req, res) {
