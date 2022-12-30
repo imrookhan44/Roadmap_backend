@@ -40,7 +40,8 @@ router.post('/getTask', TodoController.getTask)
 router.post('/deleteTask', TodoController.deleteTask);
 router.get("/getAllUsers/:email", BoardController.getAllUsers)
 router.get("/dashboard", BoardController.dashBoard);
-
+router.put("/updateSignup", AuthControllers.updateSignup);
+router.post("/userData", AuthControllers.userData)
 export default router;
 
-
+                                  
