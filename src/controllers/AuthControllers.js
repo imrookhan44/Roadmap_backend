@@ -147,6 +147,28 @@ const AuthControllers = {
       })
     }
   },
+
+  async updateSignup (req,res){
+    const {_id,name ,email ,phoneNumber,profilePicture}= req.body
+    // console.log('update',req.body)
+    if (_id){
+    const update = await User.findOneAndUpdate({_id},
+      {$set:{name,email,phoneNumber,profilePicture}})
+    return res.status(200).json({msg:'Successfully Updated'})
+    } else {
+      return res.status(404).json({msg:'Not Found'})
+    }
+  },
+  async userData (req,res){
+const {_id}=req.body
+// console.log(req.body)
+if (_id){
+  const allData= await User.findById(_id)
+return res.status(200).json({allData,msg:'Get User All Data'})
+}else {
+  return res.status(404).json({msg:'No User Data Found'})
+}
+}
 }
 
 
