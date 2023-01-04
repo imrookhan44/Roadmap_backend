@@ -18,6 +18,9 @@ var UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  profilePicture: {
+     type: String,
+  },
   
 verified:{
     type: Boolean,
