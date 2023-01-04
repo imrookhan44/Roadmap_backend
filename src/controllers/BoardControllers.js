@@ -130,4 +130,21 @@ const BoardController = {
     });
   },
 };
+
+
+
+// monthly report
+// const monthlyReport = await User.find({
+//   createdAt: {
+//     $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+//   },
+// }).count().exec();
+
+// yearly report
+// const yearlyReport = await User.find({
+//   createdAt: {
+//     $gte: new Date(new Date().setDate(new Date().getDate() - 365)),
+//   },
+// }).count().exec();
+
 export default BoardController;

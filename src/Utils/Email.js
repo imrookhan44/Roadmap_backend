@@ -13,7 +13,7 @@ const sendMail = async (email, id) => {
     to: email,
     subject: "You have been invited to collaborate on a roadmap",
     html: `<h1>Click on the link to join the board</h1>
-      <a href="http://localhost:3000/#/roadmaps/${id}">Join Board</a>
+      <a href="https://roadmap2k23.netlify.app/#/roadmaps/${id}">Join Board</a>
       `
   };
   transporter.sendMail(mailOptions, function (error, res) {
