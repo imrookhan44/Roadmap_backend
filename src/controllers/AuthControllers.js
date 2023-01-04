@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 const SECRET_KEY = "jwt";
 const sendVerifyMail = async (name, email, user_id) => {
+  console.log('mail :',email,name,user_id);
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -24,6 +25,38 @@ const sendVerifyMail = async (name, email, user_id) => {
       ' Thanks For Registering On Our Site</h2> <h4>Please Verify Your Email To Continue....</h4> Click here to <a href="https://roadmap-backend.herokuapp.com/api/verify?id=' +
       user_id +
       '"> Verify </a> your mail.</p>',
+  };
+  transporter.sendMail(mailOptions, function (error, res) {
+    if (error) {
+      return console.log(error);
+    } else {
+    }
+  });
+
+  transporter.verify((error, success) => {
+    if (error) {
+      return console.log(error);
+    } else {
+    }
+  });
+};
+const forgetVerifyMail = async (name, email, user_id) => {
+  console.log('mail :',email,name,user_id);
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.AUTH_EMAIL,
+      pass: process.env.AUTH_PASSWORD,
+    },
+  });
+  const mailOptions = {
+    from: process.env.AUTH_EMAIL,
+    to: email,
+    subject: "Email verification",
+    html:
+      "<p><h2> " +
+      email +
+      '</h2> <h4>Please Verify Your Email To Edit Password....</h4> Click here to <a href="https://roadmap2k23.netlify.app/#/Forgetpassword"> Verify </a> your email.</p>',
   };
   transporter.sendMail(mailOptions, function (error, res) {
     if (error) {
@@ -121,7 +154,7 @@ const AuthControllers = {
         { _id: req.query.id },
         { $set: { verified: true } }
       );
-      console.log(updateInfo);
+      console.log('update data',updateInfo);
       res.send(`<h1 style="text-align: center; margin-top: 100px;">Email Verified</h1>
     <p style="text-align: center; margin-top: 100px;">You can close this window now</p>
 `,)
@@ -130,8 +163,8 @@ const AuthControllers = {
     }
   },
   async forgetPassword(req, res) {
-    const { email, password } = req.body;
-    let user = await User.findOne({ email })
+    const {name, email,_id, password } = req.body;
+    let user = await User.findOne({email})
     if (user) {
       let hashedpassword = await bcrypt.hash(password, 12)
 
@@ -147,10 +180,23 @@ const AuthControllers = {
       })
     }
   },
+  async verificationPassword(req, res) {
+    const {name, email,_id, password } = req.body;
+    let user = await User.findOne({email })
+    console.log('userda',user)
+    if (user) {
+    forgetVerifyMail(user.name,user.email,user._id),
+       res.status(201).json({msg:'message send successful'})
+  } else {
+      return res.status(404).json({
+        message: 'error'
+      })
+    }
+  },
+
 
   async updateSignup (req,res){
     const {_id,name ,email ,phoneNumber,profilePicture}= req.body
-    // console.log('update',req.body)
     if (_id){
     const update = await User.findOneAndUpdate({_id},
       {$set:{name,email,phoneNumber,profilePicture}})
@@ -161,7 +207,6 @@ const AuthControllers = {
   },
   async userData (req,res){
 const {_id}=req.body
-// console.log(req.body)
 if (_id){
   const allData= await User.findById(_id)
 return res.status(200).json({allData,msg:'Get User All Data'})
