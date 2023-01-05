@@ -22,9 +22,9 @@ const BoardController = {
     });
   },
   getBoards: (req, res) => {
-    const { userIdd } = req.params;
+    const { id } = req.body;
     Board.find({
-      $or: [{ userId: userIdd }, { "member.userId": userIdd }],
+      $or: [{ userId: id }, { "member.userId": id }],
     }).then((result) => {
       if (result.length !== 0) {
         res.status(200).json({
