@@ -22,9 +22,7 @@ router.delete('/user/data/:_id', BoardController.deleteRoadmap);
 router.get('/user/data/:_id', BoardController.GetById);
 router.post('/sendEmail/:_id', BoardController.sendEmailAndSave);
 router.post('/upload', upload.single("myFile"), function (req, res) {
-  // console.log('req',req.body);
   if (req.file) {
-    // console.log(req.file);
     return res.status(200).json({
       message: "success",
     });
