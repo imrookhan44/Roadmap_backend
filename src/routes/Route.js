@@ -3,6 +3,7 @@ const router = express.Router();
 import BoardController from '../controllers/BoardControllers.js';
 import AuthControllers from '../controllers/AuthControllers.js';
 import TodoController from '../controllers/TodoController.js';
+import NotificationController from "../controllers/NotificationController.js";
 import { upload } from '../../helpers/upload.js';
 import fs from 'fs';
 
@@ -43,6 +44,10 @@ router.get("/getAllUsers/:email", BoardController.getAllUsers)
 router.get("/dashboard", BoardController.dashBoard);
 router.put("/updateSignup", AuthControllers.updateSignup);
 router.post("/userData", AuthControllers.userData)
+router.post('/invite', NotificationController.inviteUser)
+router.put("/updateInvite", NotificationController.updateInvite)
+router.put("/getInvite", NotificationController.getInvite)
+
 export default router;
 
 
