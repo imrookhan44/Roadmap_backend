@@ -1,4 +1,4 @@
-const contentPost = require("../models/content");
+import contentPost from '../models/content.js'
 
 const contentController = {
   async createContent(req, res) {
@@ -30,5 +30,5 @@ const contentController = {
     return resp.status(203).json({ message: "Delete succesfully" })
   }
 };
-module.exports = contentController;
+export default contentController;
 

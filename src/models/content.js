@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 const contentPage = new mongoose.Schema({
   title: { type: String, required: true },
@@ -13,5 +13,5 @@ const contentPage = new mongoose.Schema({
 );
 
 const contentPost = mongoose.model("contentpost", contentPage);
-module.exports = contentPost;
+export default contentPost;
 // contentpost is name s file banjata a mongodb ma

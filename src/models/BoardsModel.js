@@ -1,20 +1,91 @@
-const mongoose = require('mongoose')
+import mongoose from "mongoose";
 
-const BoardSchema = new mongoose.Schema({
-  // id: { type: Number, required: true, unique: true },
-  userId: { type: Number, required: true },
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  type: {
-    type: String, required: true, default: "public", enum: ["public", "private"]
-  },
-},
+const BoardSchema = new mongoose.Schema(
   {
-    timestamps: true
+    userId: { type: String },
+    title: { type: String },
+    description: { type: String },
+    type: {
+      type: String,
+      default: "public",
+      enum: ["public", "private"],
+    },
+    Boards: [
+      {
+        title: { type: String },
+        cards: [
+          {
+            assign: [{ email: { type: String } }],
+            title: { type: String },
+            desc: { type: String },
+            date: {
+              type: String,
+            },
+            labels: [
+              {
+                color: { type: String },
+                text: { type: String },
+              },
+            ],
+            points: {
+              type: Number,
+            },
+            files: {
+              type: String
+            },
+            tasks: [
+              {
+                completed: {
+                  type: String,
+                },
+                text: {
+                  type: String,
+                },
+                deadline: {
+                  type: Date,
+                  default: Date.now,
+                },
+                createdBy: {
+                  type: String,
+                },
+                comments: [
+                  {
+                    text: { type: String },
+                    date: { type: Date, default: Date.now },
+                  },
+                ],
+                assign: [
+                  {
+                    email: { type: String },
+                    // name: { type: String },
+                    // profile_pic: {
+                    //   type: String,
+                    //   default: "https://i.imgur.com/8Km9tLL.png",
+                    // },
+                  },
+                ],
+                date: {
+                  type: Date,
+                  default: Date.now,
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    member: [
+      {
+        email: { type: String },
+        userId: { type: String },
+        date: { type: Date, default: Date.now },
+      },
+    ],
+  },
+  {
+    timestamps: true,
   }
 );
 
 const Board = mongoose.model("Board", BoardSchema);
-module.exports = Board;
-
-
+export default Board;
