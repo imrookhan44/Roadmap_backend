@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const BoardSchema = new mongoose.Schema(
   {
-    userId: { type: String },
+    userId: [{ type:mongoose.Schema.Types.ObjectId,
+      ref:"User"}],
     title: { type: String },
     description: { type: String },
     type: {

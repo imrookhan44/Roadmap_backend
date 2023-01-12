@@ -6,8 +6,9 @@ import bcrypt from 'bcrypt';
 // const jwt = require("jsonwebtoken");
 import jwt from 'jsonwebtoken';
 const SECRET_KEY = "jwt";
+const JWT_SECRET = "jwt";
 const sendVerifyMail = async (name, email, user_id) => {
-  console.log('mail :',email,name,user_id);
+  // console.log('mail :',email,name,user_id);
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -25,38 +26,6 @@ const sendVerifyMail = async (name, email, user_id) => {
       ' Thanks For Registering On Our Site</h2> <h4>Please Verify Your Email To Continue....</h4> Click here to <a href="https://roadmap-backend.herokuapp.com/api/verify?id=' +
       user_id +
       '"> Verify </a> your mail.</p>',
-  };
-  transporter.sendMail(mailOptions, function (error, res) {
-    if (error) {
-      return console.log(error);
-    } else {
-    }
-  });
-
-  transporter.verify((error, success) => {
-    if (error) {
-      return console.log(error);
-    } else {
-    }
-  });
-};
-const forgetVerifyMail = async (name, email, user_id) => {
-  console.log('mail :',email,name,user_id);
-  let transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.AUTH_EMAIL,
-      pass: process.env.AUTH_PASSWORD,
-    },
-  });
-  const mailOptions = {
-    from: process.env.AUTH_EMAIL,
-    to: email,
-    subject: "Email verification",
-    html:
-      "<p><h2> " +
-      email +
-      '</h2> <h4>Please Verify Your Email To Edit Password....</h4> Click here to <a href="https://roadmap2k23.netlify.app/#/Forgetpassword"> Verify </a> your email.</p>',
   };
   transporter.sendMail(mailOptions, function (error, res) {
     if (error) {
@@ -181,17 +150,66 @@ const AuthControllers = {
     }
   },
   async verificationPassword(req, res) {
-    const {name, email,_id, password } = req.body;
+    const {email} = req.body;
     let user = await User.findOne({email })
-    console.log('userda',user)
+    // console.log('userda',user)
     if (user) {
-    forgetVerifyMail(user.name,user.email,user._id),
+      const secret=JWT_SECRET + user.password;
+      const token = jwt.sign({email:user.email, id:user._id},secret,{
+        expiresIn:"10m",
+      });
+      const link = `https://roadmap2k23.netlify.app/#/Forgetpassword/${user._id}/${token}`
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.AUTH_EMAIL,
+          pass: process.env.AUTH_PASSWORD,
+        },
+      });
+      const mailOptions = {
+        from: process.env.AUTH_EMAIL,
+        to: email,
+        subject: "Password reset",
+        text:link,
+      };
+      transporter.sendMail(mailOptions, function (error, res) {
+        if (error) {
+          return console.log(error);
+        } else {
+        }
+      });
+    
+      transporter.verify((error, success) => {
+        if (error) {
+          return console.log(error);
+        } else {
+        }
+      });
        res.status(201).json({msg:'message send successful'})
   } else {
       return res.status(404).json({
         message: 'error'
       })
     }
+  },
+  async passwordReset (req,res){
+const {id,token}=req.params
+try {
+const oldUser = await User.findOne({_id:id});
+if (!oldUser){
+return res.status(400).json({msg:"user not found"})
+}
+// console.log('data',oldUser)
+  const secret = JWT_SECRET + oldUser.password;
+  // console.log('secret',secret)
+  const verify= jwt.verify(token,secret);
+  // console.log('verify',verify)
+ return res.status(200).json({msg:'Verified'})
+
+} catch (error) {
+  return res.status(400).json({msg:'Token Expired'})
+  
+}
   },
 
 

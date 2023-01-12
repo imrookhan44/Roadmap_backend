@@ -15,6 +15,7 @@ router.post('/login', AuthControllers.loginUser);
 router.get('/verify', AuthControllers.verifyMail);
 router.put('/forgetPassword', AuthControllers.forgetPassword);
 router.post('/verification', AuthControllers.verificationPassword);
+router.get("/reset-password/:id/:token",AuthControllers.passwordReset )
 router.post('/user/data', BoardController.createBoard);
 router.post('/user/alldata', BoardController.getBoards);
 router.put('/user/data/:_id', BoardController.updateRoadmap);
