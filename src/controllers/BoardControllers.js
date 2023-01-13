@@ -91,6 +91,13 @@ const BoardController = {
   },
   sendEmailAndSave: async (req, res) => {
     const { email, id, userId } = req.body;
+    const user = await Board.find({ _id: req.params._id },)
+    const isUser = user[0].member.find((item) => item.email === email);
+    if (isUser) {
+      return res.status(200).json({
+        message: "User already exist",
+      });
+    }
     sendEmail(email, id);
     Board.findByIdAndUpdate(
       { _id: req.params._id },
