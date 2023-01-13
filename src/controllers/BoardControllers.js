@@ -90,14 +90,15 @@ const BoardController = {
     });
   },
   sendEmailAndSave: async (req, res) => {
-    const { email, id, userId } = req.body;
+    console.log("body",req.body);
+    const { email, id, userId,profilePicture} = req.body;
     sendEmail(email, id);
     Board.findByIdAndUpdate(
       { _id: req.params._id },
       // { $push: { "Boards.0.cards.0.tasks.0.members": { email } } },
       {
         $push: {
-          member: { email, userId },
+          member: { email, userId ,profilePicture },
         },
       },
       { new: true },
