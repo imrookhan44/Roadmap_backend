@@ -6,6 +6,7 @@ import TodoController from '../controllers/TodoController.js';
 import NotificationController from "../controllers/NotificationController.js";
 import { upload } from '../../helpers/upload.js';
 import fs from 'fs';
+import contentController from "../controllers/content.js";
 
 router.get('/', ((req, res) => {
   res.send("welcome to roadmap");
@@ -21,11 +22,13 @@ router.post('/user/alldata', BoardController.getBoards);
 router.put('/user/data/:_id', BoardController.updateRoadmap);
 router.delete('/user/data/:_id', BoardController.deleteRoadmap);
 router.get('/user/data/:_id', BoardController.GetById);
+router.post('/content/data', contentController.createContent)
+router.get('/content/data', contentController.getContent)
+router.put('/content/data/:_id', contentController.updateId)
+router.delete('/content/data/:_id', contentController.DeleteByID )
 router.post('/sendEmail/:_id', BoardController.sendEmailAndSave);
 router.post('/upload', upload.single("myFile"), function (req, res) {
-  // console.log('req',req.body);
   if (req.file) {
-    // console.log(req.file);
     return res.status(200).json({
       message: "success",
     });
