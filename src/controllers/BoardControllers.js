@@ -25,7 +25,7 @@ const BoardController = {
     const { id } = req.body;
     Board.find({
       $or: [{ userId: id }, { "member.userId": id }],
-    }).then((result) => {
+    }).populate("userId").then((result) => {
       if (result.length !== 0) {
         res.status(200).json({
           data: result,
