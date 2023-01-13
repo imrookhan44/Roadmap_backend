@@ -83,6 +83,7 @@ const BoardSchema = new mongoose.Schema(
       {
         email: { type: String },
         userId: { type: String },
+        profilePicture:{ type: String },
         date: { type: Date, default: Date.now },
       },
     ],
