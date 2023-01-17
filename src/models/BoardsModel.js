@@ -16,7 +16,9 @@ const BoardSchema = new mongoose.Schema(
         title: { type: String },
         cards: [
           {
-            assign: [{ email: { type: String } }],
+            assign: [{ email: { type: String } , picture: {
+              type: String,
+            },}],
             title: { type: String },
             desc: { type: String },
             date: {
@@ -59,9 +61,8 @@ const BoardSchema = new mongoose.Schema(
                   {
                     email: { type: String },
                     // name: { type: String },
-                    // profile_pic: {
+                    // picture: {
                     //   type: String,
-                    //   default: "https://i.imgur.com/8Km9tLL.png",
                     // },
                   },
                 ],
@@ -83,6 +84,7 @@ const BoardSchema = new mongoose.Schema(
       {
         email: { type: String },
         userId: { type: String },
+        profilePicture:{ type: String },
         date: { type: Date, default: Date.now },
       },
     ],

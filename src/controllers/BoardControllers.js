@@ -90,7 +90,7 @@ const BoardController = {
     });
   },
   sendEmailAndSave: async (req, res) => {
-    const { email, id, userId } = req.body;
+const { email, id, userId,profilePicture} = req.body;
     const user = await Board.find({ _id: req.params._id },)
     const isUser = user[0].member.find((item) => item.email === email);
     if (isUser) {
@@ -104,7 +104,7 @@ const BoardController = {
       // { $push: { "Boards.0.cards.0.tasks.0.members": { email } } },
       {
         $push: {
-          member: { email, userId },
+          member: { email, userId ,profilePicture },
         },
       },
       { new: true },
